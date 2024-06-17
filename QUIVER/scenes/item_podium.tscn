@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://bv1yb8q7ghs5j"]
+
+[ext_resource type="Texture2D" uid="uid://bxfe1nof7il7w" path="res://QUIVER/images/item-podium.png" id="1_4gfbu"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_25f6y"]
+size = Vector2(32, 32)
+
+[node name="ItemPodium" type="StaticBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_4gfbu")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_25f6y")

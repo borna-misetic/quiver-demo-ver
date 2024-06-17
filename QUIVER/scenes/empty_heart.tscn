@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://ddklqeaql306r"]
+
+[ext_resource type="Texture2D" uid="uid://spj45oihqyd1" path="res://QUIVER/images/empty-heart.png" id="1_1n77h"]
+
+[node name="EmptyHeart" type="TextureRect"]
+texture = ExtResource("1_1n77h")
+stretch_mode = 2

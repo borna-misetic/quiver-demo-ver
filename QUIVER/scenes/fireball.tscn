@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=3 uid="uid://dtb1a8sb33340"]
+
+[sub_resource type="GDScript" id="GDScript_2pag5"]
+script/source = "extends StaticBody2D
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	pass
+"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_6f1mi"]
+load_path = "res://.godot/imported/fireball.png-6eaeee825f0e8a7c3232322241e25c43.ctex"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gpqd1"]
+size = Vector2(16, 16)
+
+[node name="Fireball" type="StaticBody2D"]
+script = SubResource("GDScript_2pag5")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("CompressedTexture2D_6f1mi")
+hframes = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_gpqd1")

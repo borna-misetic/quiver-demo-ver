@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://detsr4vjji5rc"]
+
+[ext_resource type="Script" path="res://QUIVER/scripts/blinker.gd" id="1_wnlf7"]
+
+[node name="Blinker" type="Node"]
+script = ExtResource("1_wnlf7")
+
+[node name="BlinkInterval" type="Timer" parent="."]
+wait_time = 0.25
+
+[node name="EffectLength" type="Timer" parent="."]
+
+[connection signal="timeout" from="BlinkInterval" to="." method="_on_blink_interval_timeout"]
+[connection signal="timeout" from="EffectLength" to="." method="_on_effect_length_timeout"]

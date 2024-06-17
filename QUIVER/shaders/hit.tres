@@ -1,0 +1,7 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://bmwbb3kvf6vgp"]
+
+[ext_resource type="Shader" path="res://QUIVER/shaders/hit.gdshader" id="1_8jvte"]
+
+[resource]
+shader = ExtResource("1_8jvte")
+shader_parameter/whiten = false

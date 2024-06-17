@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://ndboyw0frebc"]
+
+[ext_resource type="Texture2D" uid="uid://dgjyw4x70gmni" path="res://QUIVER/images/full-heart.png" id="1_0qtl5"]
+
+[node name="FullHeart" type="TextureRect"]
+texture = ExtResource("1_0qtl5")
+stretch_mode = 2

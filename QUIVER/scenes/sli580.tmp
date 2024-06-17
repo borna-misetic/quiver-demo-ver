@@ -1,0 +1,145 @@
+[gd_scene load_steps=18 format=3 uid="uid://bp1eli7x3dv8w"]
+
+[ext_resource type="Script" path="res://QUIVER/scripts/slime.gd" id="1_qihna"]
+[ext_resource type="Texture2D" uid="uid://wbofblyuqqt7" path="res://QUIVER/images/slime.png" id="2_l5y6o"]
+[ext_resource type="Script" path="res://QUIVER/scripts/state_machine.gd" id="3_xyrbs"]
+[ext_resource type="Script" path="res://QUIVER/scripts/idle.gd" id="4_mpxnp"]
+[ext_resource type="Script" path="res://QUIVER/scripts/dead.gd" id="5_w7n2t"]
+
+[sub_resource type="Animation" id="Animation_2kjtw"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_54vqs"]
+resource_name = "death"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [3, 4, 5, 6, 7, 8, 9, 10, 11]
+}
+
+[sub_resource type="Animation" id="Animation_cs8uj"]
+resource_name = "idle"
+length = 0.1
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_tprbe"]
+resource_name = "walk"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 1]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ctn2b"]
+_data = {
+"RESET": SubResource("Animation_2kjtw"),
+"death": SubResource("Animation_54vqs"),
+"idle": SubResource("Animation_cs8uj"),
+"walk": SubResource("Animation_tprbe")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_r4fm4"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_h3ocu"]
+animation = &"walk"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_83bd3"]
+advance_mode = 2
+advance_condition = &"is_idle"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_dv3mf"]
+advance_mode = 2
+advance_condition = &"is_idle"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_d50a2"]
+advance_mode = 2
+advance_condition = &"is_walking"
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_nurb7"]
+states/idle/node = SubResource("AnimationNodeAnimation_r4fm4")
+states/idle/position = Vector2(500, 144)
+states/walk/node = SubResource("AnimationNodeAnimation_h3ocu")
+states/walk/position = Vector2(500, 48)
+transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_83bd3"), "walk", "idle", SubResource("AnimationNodeStateMachineTransition_dv3mf"), "idle", "walk", SubResource("AnimationNodeStateMachineTransition_d50a2")]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gfjge"]
+size = Vector2(16, 13)
+
+[node name="Slime" type="CharacterBody2D"]
+script = ExtResource("1_qihna")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_l5y6o")
+hframes = 4
+vframes = 3
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_ctn2b")
+}
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_ctn2b")
+}
+tree_root = SubResource("AnimationNodeStateMachine_nurb7")
+anim_player = NodePath("../AnimationPlayer")
+parameters/conditions/is_idle = false
+parameters/conditions/is_walking = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 1.5)
+shape = SubResource("RectangleShape2D_gfjge")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initialState")]
+script = ExtResource("3_xyrbs")
+initialState = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("enemy")]
+script = ExtResource("4_mpxnp")
+enemy = NodePath("../..")
+
+[node name="Dead" type="Node" parent="StateMachine" node_paths=PackedStringArray("enemy")]
+script = ExtResource("5_w7n2t")
+enemy = NodePath("../..")
