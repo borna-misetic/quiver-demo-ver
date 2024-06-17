@@ -1,0 +1,20 @@
+extends Area2D
+
+@onready var gameManager = get_parent().get_parent()
+@onready var player = gameManager.get_node("Player")
+
+func _ready():
+	if MetSys.register_storable_object(self):
+		return
+
+func _on_body_entered(body):
+	if body.is_in_group("player"):
+		MetSys.store_object(self)
+		player.hasBow = true
+		player.normalCapacity[1] += 5
+		player.normalCapacity[0] = player.normalCapacity[1]
+		player._updateAmmo(player.normalCapacity, gameManager.get_node("HUD/Main/StandardAmmo/StandardAmmoLabel"))
+		gameManager.get_node("HUD/Pickup")._pickup("CROSSBOW", "YOUR HANDY CROSSBOW. USE IT TO FEND OFF AGAINST FOES AND CLEAR OBSTACLES.")
+		gameManager.get_node("HUD/Main/StandardAmmo").visible = true
+		gameManager.get_node("HUD/Main/SelectBox/SelectedItem").texture = load("res://QUIVER/images/wooden-arrow-pickup.png")
+		queue_free()

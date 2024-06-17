@@ -1,0 +1,30 @@
+[gd_scene load_steps=7 format=3 uid="uid://ddmmvigt5vhh0"]
+
+[ext_resource type="Script" path="res://QUIVER/scripts/audio_manager.gd" id="1_lij04"]
+[ext_resource type="AudioStream" uid="uid://bxv3c3co28xw8" path="res://QUIVER/audio/rain.wav" id="1_wy60y"]
+[ext_resource type="AudioStream" uid="uid://dj8b6pkequxmq" path="res://QUIVER/audio/hit.wav" id="3_fcb4h"]
+[ext_resource type="AudioStream" uid="uid://7og2w1xm8o7m" path="res://QUIVER/audio/shoot.wav" id="4_jnwwx"]
+[ext_resource type="AudioStream" uid="uid://bh5cchtcj7mbn" path="res://QUIVER/audio/game-over.wav" id="5_lsbgs"]
+[ext_resource type="AudioStream" uid="uid://d1x0wd6n4l1g8" path="res://QUIVER/audio/victory.wav" id="6_cwqir"]
+
+[node name="AudioManager" type="Node"]
+process_mode = 3
+script = ExtResource("1_lij04")
+
+[node name="Rain" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("1_wy60y")
+bus = &"Rain"
+
+[node name="Hit" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_fcb4h")
+
+[node name="Shoot" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_jnwwx")
+
+[node name="Death" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_lsbgs")
+volume_db = -5.0
+
+[node name="Win" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_cwqir")
+volume_db = -5.0

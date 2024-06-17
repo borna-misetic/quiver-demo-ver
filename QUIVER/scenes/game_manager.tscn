@@ -1,0 +1,406 @@
+[gd_scene load_steps=17 format=3 uid="uid://dbnfajgxqny3l"]
+
+[ext_resource type="Script" path="res://QUIVER/scripts/game_manager.gd" id="1_fjsiw"]
+[ext_resource type="PackedScene" uid="uid://wjye6s8y888g" path="res://QUIVER/scenes/player.tscn" id="2_876n1"]
+[ext_resource type="Texture2D" uid="uid://7tehn8tsbcbb" path="res://QUIVER/images/item-popup.png" id="3_dxmn2"]
+[ext_resource type="Script" path="res://QUIVER/scripts/pickup.gd" id="3_ke6i6"]
+[ext_resource type="FontFile" uid="uid://dg74ql8aoubwv" path="res://QUIVER/fonts/NES.ttf" id="4_s5wqu"]
+[ext_resource type="Script" path="res://QUIVER/scripts/menu_item.gd" id="6_rg74x"]
+[ext_resource type="PackedScene" uid="uid://dcu6cqw4of1gu" path="res://QUIVER/scenes/menu_cursor.tscn" id="7_4i0gt"]
+[ext_resource type="Texture2D" uid="uid://po8respkv63v" path="res://QUIVER/images/selected-item.png" id="7_abu8q"]
+[ext_resource type="AudioStream" uid="uid://ba77fmptc0q0s" path="res://QUIVER/audio/item.wav" id="7_l364r"]
+[ext_resource type="Texture2D" uid="uid://dxxfw03rpc0k" path="res://QUIVER/images/wooden-arrow-pickup.png" id="8_88nq2"]
+[ext_resource type="Texture2D" uid="uid://nu1dvdsvpc0l" path="res://QUIVER/images/stone-arrow-pickup.png" id="9_iph4p"]
+
+[sub_resource type="Animation" id="Animation_jc4q7"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Background:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PickupTitle:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_ghlna"]
+resource_name = "popup_close"
+step = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Background:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.25, 0.5, 0.75, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [3, 2, 1, 0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PickupTitle:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_we5e2"]
+resource_name = "popup_open"
+step = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Background:frame")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25, 0.5, 0.75),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PickupTitle:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_jvif0"]
+_data = {
+"RESET": SubResource("Animation_jc4q7"),
+"popup_close": SubResource("Animation_ghlna"),
+"popup_open": SubResource("Animation_we5e2")
+}
+
+[sub_resource type="Theme" id="Theme_okm1b"]
+
+[node name="GameManager" type="Node2D"]
+script = ExtResource("1_fjsiw")
+startingRoom = "res://QUIVER/scenes/castle_beginning.tscn"
+
+[node name="Player" parent="." instance=ExtResource("2_876n1")]
+position = Vector2(115, 136)
+jumpPower = 280.0
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="Victory" type="Control" parent="HUD"]
+visible = false
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -128.0
+offset_top = -64.0
+offset_right = 128.0
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="HUD/Victory"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -72.0
+offset_top = -11.5
+offset_right = 72.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("4_s5wqu")
+theme_override_font_sizes/font_size = 18
+text = "YOU WON!"
+
+[node name="Death" type="Control" parent="HUD"]
+visible = false
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -128.0
+offset_top = -64.0
+offset_right = 128.0
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="HUD/Death"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -81.0
+offset_top = -11.5
+offset_right = 81.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("4_s5wqu")
+theme_override_font_sizes/font_size = 18
+text = "YOU DIED!"
+
+[node name="Pickup" type="Control" parent="HUD"]
+process_mode = 3
+visible = false
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -128.0
+offset_top = -64.0
+offset_right = 128.0
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("3_ke6i6")
+
+[node name="Background" type="Sprite2D" parent="HUD/Pickup"]
+texture = ExtResource("3_dxmn2")
+offset = Vector2(128, 64)
+hframes = 2
+vframes = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="HUD/Pickup"]
+libraries = {
+"": SubResource("AnimationLibrary_jvif0")
+}
+
+[node name="PickupTitle" type="RichTextLabel" parent="HUD/Pickup"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_okm1b")
+theme_override_fonts/normal_font = ExtResource("4_s5wqu")
+theme_override_font_sizes/normal_font_size = 10
+bbcode_enabled = true
+text = "[center]LOREM IPSUM[/center]
+[center]-----------[/center]
+[font_size=6
+]Something something about a powerup thingamajig."
+tab_size = 2
+
+[node name="SavePrompt" type="HBoxContainer" parent="HUD/Pickup"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.797
+anchor_right = 0.5
+anchor_bottom = 0.797
+offset_left = -40.0
+offset_top = -13.016
+offset_right = 40.0
+offset_bottom = -0.0160065
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 24
+
+[node name="YesLabel" type="Label" parent="HUD/Pickup/SavePrompt"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_s5wqu")
+theme_override_font_sizes/font_size = 14
+text = "YES"
+script = ExtResource("6_rg74x")
+
+[node name="NoLabel" type="Label" parent="HUD/Pickup/SavePrompt"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_s5wqu")
+theme_override_font_sizes/font_size = 14
+text = "NO"
+script = ExtResource("6_rg74x")
+
+[node name="Item" type="AudioStreamPlayer" parent="HUD/Pickup"]
+process_mode = 3
+stream = ExtResource("7_l364r")
+
+[node name="MenuCursor" parent="HUD" instance=ExtResource("7_4i0gt")]
+process_mode = 3
+visible = false
+menuPath = NodePath("../Pickup/SavePrompt")
+offset = Vector2(6, 0)
+
+[node name="Main" type="Control" parent="HUD"]
+layout_mode = 3
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -128.0
+offset_top = -48.0
+offset_right = 128.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 8
+metadata/_edit_lock_ = true
+
+[node name="ColorRect" type="ColorRect" parent="HUD/Main"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+metadata/_edit_lock_ = true
+
+[node name="HealthLabel" type="RichTextLabel" parent="HUD/Main"]
+layout_mode = 0
+offset_left = 11.0
+offset_top = 10.0
+offset_right = 97.0
+offset_bottom = 24.0
+theme_override_fonts/normal_font = ExtResource("4_s5wqu")
+bbcode_enabled = true
+text = "[font_size=12]HEALTH:"
+
+[node name="HeartsContainer" type="HBoxContainer" parent="HUD/Main"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.02
+anchor_top = 0.854
+anchor_right = 0.02
+anchor_bottom = 0.854
+offset_left = -0.12
+offset_top = -11.992
+offset_right = 93.88
+offset_bottom = 0.00799942
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SelectBox" type="Control" parent="HUD/Main"]
+anchors_preset = 0
+offset_left = 102.0
+offset_top = 5.0
+offset_right = 140.0
+offset_bottom = 43.0
+
+[node name="SelectedItem" type="Sprite2D" parent="HUD/Main/SelectBox"]
+position = Vector2(19, 19)
+scale = Vector2(1.5, 1.5)
+hframes = 3
+vframes = 3
+frame = 1
+
+[node name="SelectBoxSprite" type="Sprite2D" parent="HUD/Main/SelectBox"]
+position = Vector2(19, 19)
+scale = Vector2(1.58333, 1.58333)
+texture = ExtResource("7_abu8q")
+
+[node name="StandardAmmo" type="Control" parent="HUD/Main"]
+visible = false
+layout_mode = 1
+anchor_left = 0.554688
+anchor_top = 0.0833333
+anchor_right = 0.773438
+anchor_bottom = 0.958333
+offset_top = -2.0
+
+[node name="StandardAmmoSprite" type="Sprite2D" parent="HUD/Main/StandardAmmo"]
+position = Vector2(29, 16)
+scale = Vector2(1.6875, 1.6875)
+texture = ExtResource("8_88nq2")
+hframes = 3
+vframes = 3
+frame = 1
+
+[node name="StandardAmmoLabel" type="RichTextLabel" parent="HUD/Main/StandardAmmo"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0714286
+anchor_top = 0.738095
+anchor_right = 0.982143
+anchor_bottom = 1.04762
+theme_override_fonts/normal_font = ExtResource("4_s5wqu")
+bbcode_enabled = true
+text = "[font_size=10][center]0/5"
+metadata/_edit_use_anchors_ = true
+
+[node name="UpgradedAmmo" type="Control" parent="HUD/Main"]
+visible = false
+layout_mode = 1
+anchor_left = 0.773438
+anchor_top = 0.104167
+anchor_right = 0.992188
+anchor_bottom = 0.958333
+offset_top = -3.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="UpgradedAmmoSprite" type="Sprite2D" parent="HUD/Main/UpgradedAmmo"]
+position = Vector2(29, 16)
+scale = Vector2(1.688, 1.688)
+texture = ExtResource("9_iph4p")
+hframes = 3
+vframes = 3
+frame = 1
+
+[node name="UpgradedAmmoLabel" type="RichTextLabel" parent="HUD/Main/UpgradedAmmo"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0714286
+anchor_top = 0.727273
+anchor_right = 0.964286
+anchor_bottom = 1.04545
+theme_override_fonts/normal_font = ExtResource("4_s5wqu")
+bbcode_enabled = true
+text = "[font_size=10][center]0/5"
+metadata/_edit_use_anchors_ = true
+
+[connection signal="room_loaded" from="." to="." method="_on_room_loaded"]
+[connection signal="cursorDisabled" from="HUD/Pickup" to="HUD/MenuCursor" method="_on_pickup_cursor_disabled"]
+[connection signal="cursorEnabled" from="HUD/Pickup" to="HUD/MenuCursor" method="_on_pickup_cursor_enabled"]
+[connection signal="animation_finished" from="HUD/Pickup/AnimationPlayer" to="HUD/Pickup" method="_on_animation_player_animation_finished"]
+[connection signal="cursorSelected" from="HUD/Pickup/SavePrompt/YesLabel" to="." method="_on_yes_label_cursor_selected"]
+[connection signal="cursorSelected" from="HUD/Pickup/SavePrompt/NoLabel" to="." method="_on_no_label_cursor_selected"]

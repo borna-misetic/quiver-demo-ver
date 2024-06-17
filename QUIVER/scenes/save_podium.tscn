@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://b8f14q0gsy4dg"]
+
+[ext_resource type="Script" path="res://QUIVER/scripts/save_podium.gd" id="1_flb33"]
+[ext_resource type="Texture2D" uid="uid://b2y0qamnx35p3" path="res://QUIVER/images/save-podium.png" id="1_knmqn"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kmwbx"]
+size = Vector2(32, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p01x0"]
+size = Vector2(28, 2)
+
+[node name="SavePodium" type="StaticBody2D" groups=["save"]]
+script = ExtResource("1_flb33")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, 17)
+texture = ExtResource("1_knmqn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 17)
+shape = SubResource("RectangleShape2D_kmwbx")
+
+[node name="SaveArea" type="Area2D" parent="."]
+position = Vector2(0, 17)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SaveArea"]
+position = Vector2(0, -17)
+shape = SubResource("RectangleShape2D_p01x0")
+
+[connection signal="saveInitiated" from="." to="." method="_on_save_initiated"]
+[connection signal="body_entered" from="SaveArea" to="." method="_on_save_area_body_entered"]

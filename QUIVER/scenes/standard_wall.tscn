@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://fygnew25gpga"]
+
+[ext_resource type="Texture2D" uid="uid://c73k7kvewdacg" path="res://QUIVER/images/standard-wall.png" id="1_8sjjq"]
+[ext_resource type="Script" path="res://QUIVER/scripts/standard_wall.gd" id="1_c78ox"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_urht5"]
+size = Vector2(16, 32)
+
+[node name="StandardWall" type="StaticBody2D" groups=["standard_wall"]]
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("1_c78ox")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_8sjjq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_urht5")

@@ -1,0 +1,209 @@
+[gd_scene load_steps=13 format=3 uid="uid://bjyg3d776idec"]
+
+[ext_resource type="Texture2D" uid="uid://df02bqw12sqvc" path="res://QUIVER/images/lightning.png" id="1_6uui7"]
+[ext_resource type="PackedScene" uid="uid://bsg0351mx3b4u" path="res://addons/MetroidvaniaSystem/Nodes/RoomInstance.tscn" id="1_vfeol"]
+[ext_resource type="Texture2D" uid="uid://dolgc8ysth8c" path="res://QUIVER/images/castle-beginning-sheet.png" id="2_2xy18"]
+[ext_resource type="Texture2D" uid="uid://be4bnb6ri1xq7" path="res://QUIVER/images/rain.png" id="2_bravy"]
+
+[sub_resource type="Animation" id="Animation_ar64q"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Lightning:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ColorRect:color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 0.431373)]
+}
+
+[sub_resource type="Animation" id="Animation_vnscx"]
+resource_name = "lightning"
+length = 6.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Lightning:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(1, 1.1, 1.2, 1.3, 1.9, 2, 2.1, 2.6, 2.7, 2.8, 2.9, 3.5, 3.6, 3.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 0, 0, 1, 2, 3, 4, 5, 0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ColorRect:color")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1.1, 1.2, 1.3, 1.9, 2, 2.1, 2.6, 2.7, 2.8, 2.9, 3.5, 3.6, 3.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [Color(0, 0, 0, 0.431373), Color(0, 0, 0, 0.27451), Color(0, 0, 0, 0.156863), Color(0, 0, 0, 0), Color(0, 0, 0, 0.156863), Color(0, 0, 0, 0.27451), Color(0, 0, 0, 0.431373), Color(0, 0, 0, 0.431373), Color(0, 0, 0, 0.27451), Color(0, 0, 0, 0.156863), Color(0, 0, 0, 0), Color(0, 0, 0, 0.156863), Color(0, 0, 0, 0.27451), Color(0, 0, 0, 0.431373)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_1m5mj"]
+_data = {
+"RESET": SubResource("Animation_ar64q"),
+"lightning": SubResource("Animation_vnscx")
+}
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_5uy2e"]
+texture = ExtResource("2_2xy18")
+0:0/0 = 0
+0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:0/0/physics_layer_0/angular_velocity = 0.0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+1:0/0 = 0
+1:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+1:0/0/physics_layer_0/angular_velocity = 0.0
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+2:0/0 = 0
+2:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+2:0/0/physics_layer_0/angular_velocity = 0.0
+2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+3:0/0 = 0
+3:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+3:0/0/physics_layer_0/angular_velocity = 0.0
+3:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+0:1/0 = 0
+0:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:1/0/physics_layer_0/angular_velocity = 0.0
+0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+1:1/0 = 0
+1:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+1:1/0/physics_layer_0/angular_velocity = 0.0
+1:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+2:1/0 = 0
+2:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+2:1/0/physics_layer_0/angular_velocity = 0.0
+2:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+3:1/0 = 0
+3:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+3:1/0/physics_layer_0/angular_velocity = 0.0
+3:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+0:2/0 = 0
+0:2/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:2/0/physics_layer_0/angular_velocity = 0.0
+1:2/0 = 0
+1:2/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+1:2/0/physics_layer_0/angular_velocity = 0.0
+2:2/0 = 0
+2:2/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+2:2/0/physics_layer_0/angular_velocity = 0.0
+3:2/0 = 0
+3:2/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+3:2/0/physics_layer_0/angular_velocity = 0.0
+0:3/0 = 0
+0:3/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:3/0/physics_layer_0/angular_velocity = 0.0
+
+[sub_resource type="TileSet" id="TileSet_kh5bv"]
+physics_layer_0/collision_layer = 1
+sources/0 = SubResource("TileSetAtlasSource_5uy2e")
+
+[sub_resource type="Animation" id="Animation_mu5et"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Rain:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_tm571"]
+resource_name = "rain"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Rain:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_mbpbi"]
+_data = {
+"RESET": SubResource("Animation_mu5et"),
+"rain": SubResource("Animation_tm571")
+}
+
+[node name="CastleBeginning" type="Node2D"]
+
+[node name="RoomInstance" parent="." instance=ExtResource("1_vfeol")]
+
+[node name="Lightning" type="Sprite2D" parent="."]
+z_index = -2
+texture = ExtResource("1_6uui7")
+offset = Vector2(128, 120)
+hframes = 3
+vframes = 2
+
+[node name="LightningAnimationPlayer" type="AnimationPlayer" parent="Lightning"]
+root_node = NodePath("../..")
+libraries = {
+"": SubResource("AnimationLibrary_1m5mj")
+}
+autoplay = "lightning"
+
+[node name="Background" type="TileMap" parent="."]
+tile_set = SubResource("TileSet_kh5bv")
+format = 2
+layer_0/tile_data = PackedInt32Array(720896, 0, 1, 786432, 0, 1, 851968, 0, 1, 917504, 0, 1, 917505, 0, 1, 917506, 0, 1, 917507, 65536, 1, 917508, 65536, 1, 917509, 0, 1, 917510, 0, 1, 917511, 65536, 1, 917512, 0, 1, 917513, 65536, 1, 917514, 65536, 1, 11, 0, 0, 917515, 65536, 1, 12, 65536, 0, 917516, 0, 1, 13, 0, 0, 917517, 0, 1, 14, 0, 0, 917518, 0, 1, 15, 0, 0, 720911, 0, 1, 786447, 0, 1, 851983, 0, 1, 917519, 0, 1, 983039, 0, 0, 917503, 0, 0, 851967, 0, 0, 786431, 0, 0, 720895, 0, 0, 655359, 131072, 0, 589823, 131072, 0, 524287, 131072, 0, 458751, 131072, 0, 393215, 131072, 0, 327679, 131072, 0, 262143, 131072, 0, 196607, 131072, 0, 131071, 131072, 0, 65535, 131072, 0, 720897, 0, 1, 720898, 65536, 1, 786434, 0, 1, 786435, 0, 1, 786436, 0, 1, 786437, 65536, 1, 786438, 0, 1, 720903, 65536, 1, 786440, 0, 1, 786441, 0, 1, 786442, 65536, 1, 786443, 0, 1, 786444, 0, 1, 786445, 0, 1, 786446, 0, 1, 720910, 0, 1, 720909, 65536, 1, 720908, 0, 1, 720907, 65536, 1, 720906, 0, 1, 786439, 65536, 1, 720900, 0, 1, 720899, 65536, 1, 786433, 0, 1, 851971, 65536, 1, 851972, 0, 1, 851970, 65536, 1, 851969, 0, 1, 851973, 0, 1, 851974, 0, 1, 851975, 0, 1, 851976, 0, 1, 851977, 0, 1, 851978, 0, 1, 851979, 65536, 1, 851980, 0, 1, 851981, 0, 1, 851982, 0, 1, 720905, 65536, 1, 720904, 0, 1, 720902, 0, 1, 720901, 0, 1, 655360, 196608, 1, 655361, 131072, 1, 655362, 196608, 1, 655363, 131072, 1, 655364, 131072, 1, 655365, 131072, 1, 655366, 196608, 1, 655367, 131072, 1, 655368, 131072, 1, 655369, 196608, 1, 655370, 131072, 1, 655371, 131072, 1, 655372, 196608, 1, 655373, 196608, 1, 655375, 0, 0, 393230, 0, 0, 393231, 0, 0, 327695, 65536, 0, 262159, 0, 0, 262158, 0, 0, 196622, 65536, 0, 131085, 0, 0, 131084, 0, 0, 65548, 0, 0, 65547, 0, 0, 196620, 0, 0, 196621, 0, 0, 131086, 0, 0, 65550, 0, 0, 65549, 0, 0, 65551, 65536, 0, 131087, 0, 0, 196623, 0, 0, 262157, 0, 0, 327694, 0, 0, 655374, 0, 0, 458752, 131072, 0, 393216, 131072, 0, 327680, 196608, 0, 524288, 131072, 0, 589824, 131072, 0)
+
+[node name="Foreground" type="TileMap" parent="."]
+z_index = -1
+tile_set = SubResource("TileSet_kh5bv")
+format = 2
+layer_0/tile_data = PackedInt32Array(589827, 0, 2, 589828, 196608, 2, 589829, 65536, 2, 589830, 65536, 2, 589831, 196608, 2, 589832, 65536, 2, 589833, 131072, 2, 589835, 0, 2, 589836, 65536, 2, 589837, 196608, 2, 589838, 0, 3, 524302, 0, 3, 458766, 0, 3, 458767, 0, 3, 524303, 0, 3, 589839, 0, 3)
+
+[node name="Rain" type="Sprite2D" parent="."]
+z_index = -2
+texture = ExtResource("2_bravy")
+offset = Vector2(128, 120)
+hframes = 3
+vframes = 3
+
+[node name="RainAnimationPlayer" type="AnimationPlayer" parent="Rain"]
+root_node = NodePath("../..")
+libraries = {
+"": SubResource("AnimationLibrary_mbpbi")
+}
+autoplay = "rain"
+
+[node name="ColorRect" type="ColorRect" parent="."]
+z_index = 1
+offset_right = 256.0
+offset_bottom = 240.0
+color = Color(0, 0, 0, 0.431373)

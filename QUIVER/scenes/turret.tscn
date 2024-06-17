@@ -1,0 +1,155 @@
+[gd_scene load_steps=14 format=3 uid="uid://q4jw1mf2oyio"]
+
+[ext_resource type="Texture2D" uid="uid://colnbe116s8v7" path="res://QUIVER/images/turret.png" id="1_k8koo"]
+[ext_resource type="Script" path="res://QUIVER/scripts/turret.gd" id="1_ry5fw"]
+[ext_resource type="Script" path="res://QUIVER/scripts/state_machine.gd" id="2_dyjp0"]
+[ext_resource type="Script" path="res://QUIVER/scripts/dead.gd" id="3_bgfow"]
+[ext_resource type="Script" path="res://QUIVER/scripts/turret_standby.gd" id="4_eq3j3"]
+[ext_resource type="Script" path="res://QUIVER/scripts/turret_firing.gd" id="4_gdo0i"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rd2c6"]
+size = Vector2(16, 16)
+
+[sub_resource type="Animation" id="Animation_e3vgb"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:hframes")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [4]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_y8agk"]
+resource_name = "death"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [2, 3, 4, 5, 6, 7, 8, 9, 10]
+}
+
+[sub_resource type="Animation" id="Animation_bsf5k"]
+resource_name = "detected"
+length = 0.001
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+
+[sub_resource type="Animation" id="Animation_n27t1"]
+resource_name = "idle"
+length = 0.001
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_uq1em"]
+_data = {
+"RESET": SubResource("Animation_e3vgb"),
+"death": SubResource("Animation_y8agk"),
+"detected": SubResource("Animation_bsf5k"),
+"idle": SubResource("Animation_n27t1")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8mq6k"]
+size = Vector2(128, 128)
+
+[node name="Turret" type="CharacterBody2D" groups=["enemy"]]
+script = ExtResource("1_ry5fw")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_k8koo")
+hframes = 4
+vframes = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_rd2c6")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_uq1em")
+}
+
+[node name="Detection" type="Area2D" parent="."]
+
+[node name="DetectionCollider" type="CollisionShape2D" parent="Detection"]
+shape = SubResource("RectangleShape2D_8mq6k")
+
+[node name="Marker2D" type="Marker2D" parent="."]
+position = Vector2(20, 0)
+
+[node name="FireRate" type="Timer" parent="."]
+
+[node name="Drop1" type="Marker2D" parent="." groups=["drop"]]
+position = Vector2(-1, 4)
+
+[node name="Drop2" type="Marker2D" parent="." groups=["drop"]]
+position = Vector2(-7, -4)
+
+[node name="Drop3" type="Marker2D" parent="." groups=["drop"]]
+position = Vector2(5, -2)
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initialState")]
+script = ExtResource("2_dyjp0")
+initialState = NodePath("TurretStandby")
+
+[node name="TurretFiring" type="Node" parent="StateMachine" node_paths=PackedStringArray("enemy", "detectionArea", "marker")]
+script = ExtResource("4_gdo0i")
+enemy = NodePath("../..")
+detectionArea = NodePath("../../Detection")
+marker = NodePath("../../Marker2D")
+
+[node name="TurretStandby" type="Node" parent="StateMachine" node_paths=PackedStringArray("enemy", "detectionArea")]
+script = ExtResource("4_eq3j3")
+enemy = NodePath("../..")
+detectionArea = NodePath("../../Detection")
+
+[node name="Dead" type="Node" parent="StateMachine" node_paths=PackedStringArray("enemy")]
+script = ExtResource("3_bgfow")
+enemy = NodePath("../..")
+
+[connection signal="body_entered" from="Detection" to="." method="_on_detection_body_entered"]
+[connection signal="body_exited" from="Detection" to="." method="_on_detection_body_exited"]

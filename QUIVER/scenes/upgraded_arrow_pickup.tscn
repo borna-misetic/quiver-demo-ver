@@ -1,0 +1,67 @@
+[gd_scene load_steps=7 format=3 uid="uid://bapmi2q0c6s7i"]
+
+[ext_resource type="Script" path="res://QUIVER/scripts/upgraded_arrow_pickup.gd" id="1_luh5m"]
+[ext_resource type="Texture2D" uid="uid://xbtvrum4i8ym" path="res://QUIVER/images/stone-arrow-pickup-small.png" id="1_p6c6w"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0o2h0"]
+size = Vector2(8, 8)
+
+[sub_resource type="Animation" id="Animation_w7iun"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_f364p"]
+resource_name = "spin"
+length = 1.6
+loop_mode = 1
+step = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1, 1.2, 1.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_j8dyf"]
+_data = {
+"RESET": SubResource("Animation_w7iun"),
+"spin": SubResource("Animation_f364p")
+}
+
+[node name="UpgradedArrowPickup" type="Area2D" groups=["pickupItem"]]
+z_index = -1
+script = ExtResource("1_luh5m")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_p6c6w")
+hframes = 3
+vframes = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_0o2h0")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_j8dyf")
+}
+autoplay = "spin"
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]
